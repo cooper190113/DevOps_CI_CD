@@ -49,13 +49,17 @@ maven仓库默认配置/root/.m2
 
 推荐xmission镜像	
 
+```
 sed -i 's#https://updates.jenkins.io/update-center.json#http://mirror.xmission.com/jenkins/updates/update-center.json#g' hudson.model.UpdateCenter.xml
+```
 
 3、修改镜像源
 
 ​      目录/var/jenkins_home/updates/default.json
 
+```
 sed -i 's#https://updates.jenkins.io/download#https://mirrors.tuna.tsinghua.edu.cn/jenkins#g' default.json && sed -i 's#http://www.google.com#https://www.baidu.com#g' default.json
+```
 
 4、默认密码路径/jenkins/secrets/initialAdminPasswords
 
