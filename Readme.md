@@ -68,3 +68,18 @@ sed -i 's#https://updates.jenkins.io/download#https://mirrors.tuna.tsinghua.edu.
 ## sonar配置
 
 http://www.itmuch.com/other/sonar/
+
+**1、maven全局配置**
+
+```
+mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=admin123 -Dsonar.java.binaries=target/sonar
+```
+
+**2、直接命令行配置**
+
+```
+mvn sonar:sonar \
+    -Dsonar.host.url=http://localhost:9000 \
+    -Dsonar.login=62b615f477557f98bc60b396c2b4ca2793afbdea \
+    -Dsonar.java.binaries=target/sonar
+```
