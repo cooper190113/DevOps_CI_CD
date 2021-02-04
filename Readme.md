@@ -1,8 +1,8 @@
 ## 权限配置
 
 ```
-sudo chmod 777 ./*
-sudo chown -R 1000:1000 ./* OR sudo chown -R 200 ./*
+sudo chmod -R 777 ./*
+sudo chown -R 1000:1000 ./*
 ```
 
 
@@ -16,6 +16,12 @@ sudo chown -R 1000:1000 ./* OR sudo chown -R 200 ./*
 sonarqube管理员账号密码都是：admin
 
 nexus3在容器内的 /opt/sonatype/sonatype-work/nexus3/ 目录下的 **admin.password** 文件中
+
+
+
+## Nexus配置
+
+maven仓库默认配置/root/.m2
 
 
 
@@ -37,3 +43,9 @@ sed -i 's#https://updates.jenkins.io/update-center.json#http://mirror.xmission.c
 sed -i 's#https://updates.jenkins.io/download#https://mirrors.tuna.tsinghua.edu.cn/jenkins#g' default.json && sed -i 's#http://www.google.com#https://www.baidu.com#g' default.json
 
 4、默认密码路径/jenkins/secrets/initialAdminPasswords
+
+
+
+## sonar配置
+
+http://www.itmuch.com/other/sonar/
