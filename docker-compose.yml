@@ -1,0 +1,77 @@
+version: "3"
+services:
+  nexus:
+    container_name: dev-nexus3
+    image: sonatype/nexus3
+    restart: always
+    privileged: true
+    ports:
+      - "8081:8081"
+      - "5000:5000"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./nexus/nexus-data:/nexus-data:rw
+    networks: 
+      - devops-network
+  jenkins:  
+    container_name: dev-jenkins
+    image: jenkins/jenkins
+    restart: always
+    privileged: true
+    volumes:  
+      - /etc/localtime:/etc/localtime:ro
+      - ./jenkins/jenkins_home:/var/jenkins_home:rw
+      - /usr/local/jdk1.8.0_181:/usr/local/jdk    
+      - /usr/local/apache-maven-3.6.3:/usr/local/apache-maven-3.6.3
+      - /var/run/docker.sock:/var/run/docker.sock 
+      - /usr/bin/docker:/usr/bin/docker
+      - /usr/lib/x86_64-linux-gnu/libltdl.so.7:/usr/lib/x86_64-linux-gnu/libltdl.so.7
+      - /usr/local/bin/docker-compose:/usr/local/bin/docker-compose
+      -  ~/.ssh:/root/.ssh
+    ports:  
+      - "8080:8080"
+      - "50000:50000"
+    networks: 
+      - devops-network
+  postgres: 
+    container_name: dev-sonarqube-postgres
+    image: postgres:9.4
+    restart: always
+    privileged: true
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data/pgdata #将数据映射到对应的路径
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata #数据存储文件夹
+      TZ: Asia/Shanghai    
+      POSTGRES_USER: sonar   
+      POSTGRES_PASSWORD: sonar
+      POSTGRES_DB: sonar
+    networks: 
+      - devops-network
+  sonarqube:  
+    container_name: dev-sonarqube
+    image: sonarqube
+    restart: always
+    privileged: true
+    ports:  
+      - "9000:9000"
+      - "9092:9092"
+    volumes:  
+      - ./sonarqube/logs:/opt/sonarqube/logs
+      - ./sonarqube/data:/opt/sonarqube/data
+      - ./sonarqube/extensions:/opt/sonarqube/extensions
+      - ./sonarqube/conf:/opt/sonarqube/conf
+    environment:
+      SONARQUBE_JDBC_USERNAME: sonar
+      SONARQUBE_JDBC_PASSWORD: sonar
+      SONARQUBE_JDBC_URL: jdbc:postgresql://postgres:5432/sonar
+    networks: 
+      - devops-network
+    depends_on:
+      - postgres
+
+networks:
+  devops-network:
+    driver: bridge
